@@ -7,12 +7,13 @@ const TerserPlugin = require('terser-webpack-plugin');
 const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
 
 const production = process.env.NODE_ENV === 'production';
+const ASSET_PATH = production ? '/' : '';
 
 module.exports = {
-  entry: { main: path.resolve(__dirname, './src/index.js') },
+  entry: { index: path.resolve(__dirname, './src/index.js') },
   output: {
     path: path.resolve(__dirname, './build'),
-    publicPath: '/',
+    publicPath: ASSET_PATH || 'auto',
     filename: production ? '[name].[contenthash].js' : '[name].js',
     clean: true,
   },
