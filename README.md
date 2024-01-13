@@ -5,7 +5,7 @@
 ### To start a project for development:
 
 ```bash
-npm i npm run start
+npm i && npm run start
 ```
 
 Runs the app in the development mode.\
