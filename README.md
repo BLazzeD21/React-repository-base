@@ -1,4 +1,4 @@
-# 🚀 Welcome my first react application!
+# 🚀 Welcome to the react application!
 
 ## Development 🛠
 
