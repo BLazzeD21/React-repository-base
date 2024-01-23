@@ -4,9 +4,9 @@
   "description": "Base Repository for developing apps using React",
   "main": "/index.js",
   "scripts": {
-    "dev": "npx webpack serve --mode=development --config webpack.config.js --open",
-    "build": "npx webpack --mode=production --config webpack.config.js",
-    "clean": "rd /s /q build"
+    "dev": "npx webpack serve --mode=development --config webpack.config.cjs --open",
+    "build": "npm run clean && npx webpack --mode=production --config webpack.config.cjs",
+    "clean": "rimraf build/"
   },
   "author": "BLazzeD",
   "license": "Apache License",
@@ -14,13 +14,13 @@
     "axios": "^1.6.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.21.2"
+    "react-router-dom": "^6.21.2",
+    "rimraf": "^5.0.5"
   },
   "devDependencies": {
     "@babel/core": "^7.22.20",
     "@babel/preset-react": "^7.22.15",
-    "babel-loader": "^9.1.3",
-    "clean-webpack-plugin": "^4.0.0",
+    "babel-loader": "^9.1.3", 
     "css-loader": "^6.8.1",
     "eslint": "^8.52.0",
     "eslint-config-google": "^0.14.0",

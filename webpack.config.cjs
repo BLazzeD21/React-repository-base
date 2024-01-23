@@ -7,13 +7,16 @@ const TerserPlugin = require('terser-webpack-plugin');
 const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
 
 const production = process.env.NODE_ENV === 'production';
-const ASSET_PATH = production ? '/' : '';
+const ASSET_PATH = production ? '/' : 'auto';
 
 module.exports = {
+  performance: {
+    hints: false,
+  },
   entry: { index: path.resolve(__dirname, './src/index.js') },
   output: {
     path: path.resolve(__dirname, './build'),
-    publicPath: ASSET_PATH || 'auto',
+    publicPath: ASSET_PATH,
     filename: production ? '[name].[contenthash].js' : '[name].js',
     clean: true,
   },
@@ -45,15 +48,11 @@ module.exports = {
         ],
       },
       {
-        test: /\.(png|jpe?g|gif)$/i,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {
-              outputPath: 'assets',
-            },
-          },
-        ],
+        test: /\.(png|jpe?g|gif)$/,
+        type: 'asset/resource',
+        generator: {
+          filename: 'images/[name][ext]',
+        },
       },
     ],
   },
