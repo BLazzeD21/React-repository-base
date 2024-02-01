@@ -5,6 +5,8 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
 const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 
 const production = process.env.NODE_ENV === 'production';
 const ASSET_PATH = '/';
@@ -69,6 +71,8 @@ module.exports = {
       template: './src/index.html',
     }),
     new NodePolyfillPlugin(),
+    new Dotenv({ systemvars: true }),
+    new FaviconsWebpackPlugin('./public/favicon.png'),
   ],
   optimization: {
     minimize: true,
