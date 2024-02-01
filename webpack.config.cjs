@@ -1,19 +1,21 @@
-// eslint-disable-next-line no-unused-vars
 const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
+const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin');
 
 const production = process.env.NODE_ENV === 'production';
-const ASSET_PATH = production ? '/' : 'auto';
+const ASSET_PATH = '/';
 
 module.exports = {
   performance: {
     hints: false,
   },
-  entry: { index: path.resolve(__dirname, './src/index.js') },
+  entry: {
+    bundle: path.resolve(__dirname, './src/index.js'),
+  },
   output: {
     path: path.resolve(__dirname, './build'),
     publicPath: ASSET_PATH,
@@ -51,21 +53,44 @@ module.exports = {
         test: /\.(png|jpe?g|gif)$/,
         type: 'asset/resource',
         generator: {
-          filename: 'images/[name][ext]',
+          filename: 'images/[hash][ext][query]',
         },
       },
     ],
   },
   plugins: [
+    new webpack.ids.HashedModuleIdsPlugin({
+      context: __dirname,
+      hashFunction: 'sha256',
+      hashDigest: 'hex',
+      hashDigestLength: 20,
+    }),
     new HtmlWebpackPlugin({
       template: './src/index.html',
     }),
     new NodePolyfillPlugin(),
   ],
   optimization: {
+    minimize: true,
     minimizer: [
       new TerserPlugin({
+        test: /\.js(\?.*)?$/i,
+        parallel: true,
         extractComments: false,
+        minify: TerserPlugin.uglifyJsMinify,
+      }),
+      new ImageMinimizerPlugin({
+        minimizer: {
+          implementation: ImageMinimizerPlugin.imageminMinify,
+          options: {
+            plugins: [
+              'imagemin-gifsicle',
+              'imagemin-mozjpeg',
+              'imagemin-pngquant',
+              'imagemin-svgo',
+            ],
+          },
+        },
       }),
     ],
   },
